@@ -1,0 +1,90 @@
+/* Reset and General Styles */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body,
+html {
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
+  margin: 0;
+  padding: 0;
+}
+
+/* Slider Styles */
+.slider {
+  margin-top: -17px;
+  height: 50vh;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.slider .slides {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+  height: 100%;
+  width: 400%;
+}
+
+.slider .slides img {
+  width: 25%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.navigation {
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  display: flex;
+  justify-content: space-between;
+  transform: translateY(-50%);
+}
+
+.navigation button {
+  background-color: rgba(0, 0, 0, 0.5);
+  border: none;
+  color: white;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: background-color 0.3s ease;
+}
+
+.navigation button:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+/* Media Query for Responsive Adjustments */
+@media (max-width: 768px) {
+  .slider {
+    height: 40vh;
+  }
+  .slider .slides {
+    width: 300%;
+  }
+  .slider .slides img {
+    width: 33.33%;
+  }
+}
+
+@media (max-width: 480px) {
+  .slider {
+    height: 30vh;
+  }
+  .slider .slides {
+    width: 400%;
+  }
+  .slider .slides img {
+    width: 25%;
+  }
+  .navigation button {
+    padding: 8px;
+    font-size: 16px;
+  }
+}

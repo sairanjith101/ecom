@@ -1,0 +1,87 @@
+{% extends 'onlineshop/base.html' %} {% load static %} {% block title %} Cart |
+Online Shopping {% endblock title %} {% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/cart_v2.css' %}" />
+
+<section class="bg-light py-4 my-5" style="min-height: 600px">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <h4 class="mb-3">Cart Items</h4>
+        <hr style="border-color: #b8bfc2" />
+        {% include 'onlineshop/message.html' %}
+      </div>
+
+      <table class="cart-table">
+        <tr>
+          <th>Image</th>
+          <th>Product Name</th>
+          <th>Unit</th>
+          <th>Quantity</th>
+          <th>Amount</th>
+          <th>Purchase</th>
+          <th>Remove</th>
+        </tr>
+        {% for item in cart %}
+        <tr>
+          <td>
+            <img
+              src="{{item.product.product_image.url}}"
+              height="75px"
+              alt="{{item.product.name}}"
+            />
+          </td>
+          <td>{{item.product.name}}</td>
+          <td>{{item.product.selling_price | stringformat:'d'}}</td>
+          <td>{{item.product_qty}}</td>
+          <td class="amt">{{item.total_cost | stringformat:'d'}}</td>
+          <td>
+            <!-- Form to handle purchase for a specific product -->
+            <form action="{% url 'purchase' %}" method="post" onsubmit="return confirmPurchase()">
+              {% csrf_token %}
+              <input type="hidden" name="product_id" value="{{ item.product.id }}" />
+              <!-- Include the correct product ID -->
+              <button type="submit" class="btn-buy">
+                <i class="fas fa-shopping-cart"></i> Buy Now
+              </button>
+            </form>
+          </td>
+          <td>
+            <a
+              href="{% url 'remove_cart' item.id %}"
+              onclick="return confirm('Are you sure? to Remove')"
+              class="btn-remove"
+            >
+              <i class="fa fa-trash"></i> Remove
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+        <tr>
+          <td></td>
+          <td></td>
+
+          <td colspan="2"><b>Total Amount</b></td>
+          <td id="net" colspan="3"><b>0</b></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- Notification bar -->
+<div id="notification-bar" class="notification-bar"></div>
+
+<script>
+  const nodes = document.querySelectorAll(".amt");
+  const arr = Array.from(nodes);
+  const res = arr.reduce((acc, curr) => {
+    return (acc += Number(curr.textContent));
+  }, 0);
+  document.getElementById("net").innerHTML = "Rs : " + res;
+
+  function confirmPurchase() {
+    return confirm('Are you sure you want to purchase this item?');
+  }
+</script>
+
+{% endblock content %}
